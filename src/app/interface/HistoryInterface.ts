@@ -9,12 +9,6 @@ export interface HistoryInterface {
    */
   getHistoryList(userId: number, db: any): Promise<any>
   /**
-   * 删除一条浏览记录
-   * @param historyId
-   * @param db
-   */
-  deleteHistory(historyId: number, db: any): Promise<any>
-  /**
    * 生成一条浏览记录
    * @param historyInfo
    * @param db
