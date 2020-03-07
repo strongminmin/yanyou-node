@@ -1,5 +1,5 @@
 import { Injectable } from 'kever'
-import { MeetInterface } from '../interface/MeetInterface'
+import { MeetInterface } from '../interface'
 
 @Injectable('meet')
 export default class MeetService implements MeetInterface {
