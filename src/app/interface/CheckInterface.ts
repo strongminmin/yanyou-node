@@ -13,18 +13,11 @@ export interface CheckInterface {
    * @param userId
    * @param db
    */
-  getUserCheckNum(userId: number, db: any): Promise<any>
+  getCheckNum(userId: number, db: any): Promise<any>
   /**
-   * 更新打卡记录
-   * @param userId
-   * @param count
-   * @param db
-   */
-  updateCheckNum(userId: number, count: number, db: any): Promise<any>
-  /**
-   * 创建打卡记录
+   * 获取打卡记录
    * @param userId
    * @param db
    */
-  craeteUserCheck(userId: number, db: any): Promise<any>
+  getCheckList(userId: number, db: any): Promise<any>
 }
