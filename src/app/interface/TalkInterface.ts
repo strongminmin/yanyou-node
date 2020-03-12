@@ -4,20 +4,29 @@
 export interface TalkInterface {
   /**
    * 获取说说列表
+   * @param page
+   * @param count
    * @param db
    */
-  getTalkList(db: any): Promise<any>
+  getTalkList(page: number, count: number, db: any): Promise<any>
   /**
    * 创建一条说说
    * @param userid
-   * @param talkInfo
+   * @param content
+   * @param images
    * @param db
    */
-  createTalk(userid: number, talkInfo: Object, db: any): Promise<any>
+  createTalk(userid: number, content: string, images: File[], db: any): Promise<any>
   /**
    * 删除一条说说
    * @param talkId
    * @param db
    */
   deleteTalk(talkId: number, db: any): Promise<any>
+  /**
+   * 禁用/启用
+   * @param talkId
+   * @param db
+   */
+  disableTalk(talkId: number, db: any): Promise<any>
 }

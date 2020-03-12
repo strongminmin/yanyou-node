@@ -5,10 +5,11 @@ export interface LikeInterface {
   /**
    * 获取点赞数
    * @param type
+   * @param userId
    * @param targetId
    * @param db
    */
-  getLikeCount(type: number, targetId: number, db: any): Promise<any>
+  getLike(type: number, userId: number, targetId: number, db: any): Promise<any>
   /**
    * 点赞
    * @param type

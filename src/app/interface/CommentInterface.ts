@@ -13,7 +13,7 @@ export interface CommentInterface {
    * @param commentInfo
    * @param db
    */
-  createComment(commentInfo: Object, db: any): Promise<any>
+  createComment(commentInfo: any, db: any): Promise<any>
   /**
    * 删除一条评论
    * @param talkId
