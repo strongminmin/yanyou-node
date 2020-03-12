@@ -10,8 +10,15 @@ export interface HistoryInterface {
   getHistoryList(userId: number, db: any): Promise<any>
   /**
    * 生成一条浏览记录
-   * @param historyInfo
+   * @param user_id
+   * @param content
    * @param db
    */
-  createHistory(historyInfo: object, db: any): Promise<any>
+  createHistory(user_id: number, content: string, db: any): Promise<any>
+  /**
+   * 清空历史记录
+   * @param userId
+   * @param db
+   */
+  clearnHistory(userId: number, db: any): Promise<any>
 }
