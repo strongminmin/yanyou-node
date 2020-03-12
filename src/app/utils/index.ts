@@ -67,21 +67,11 @@ export const beforeTime = (time: number) => {
   if (diff < 60) {
     return `${diff}分钟前`
   }
-  // console.log(diff)
   diff = Math.floor(diff / 60)
   if (diff < 24) {
     return `${diff}小时前`
   }
-  diff = Math.floor(diff / 24)
-  if (diff < 31) {
-    return `${diff}天前`
-  }
-  diff = Math.floor(diff / 30)
-  if (diff < 12) {
-    return `${diff}月前`
-  }
-  diff = Math.floor(diff / 12)
-  return `${diff}年前`
+  return new Date(+time).toLocaleDateString()
 }
 
 export const upload = async (file: any) => {

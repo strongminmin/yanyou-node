@@ -14,7 +14,7 @@ export interface PlanInterface {
    * @param planInfo
    * @param db
    */
-  createPlan(userId: number, planInfo: object, db: any): Promise<any>
+  createPlan(userId: number, planInfo: any, db: any): Promise<any>
   /**
    * 删除一个计划
    * @param planId
