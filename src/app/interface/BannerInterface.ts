@@ -15,8 +15,8 @@ export interface BannerInterface {
   deleteBanner(bannerId: number, db: any): Promise<any>
   /**
    * 插入一张图片
-   * @param bannerFile
+   * @param bannerImage
    * @param db
    */
-  createBanner(bannerFile: File, db: any): Promise<any>
+  createBanner(bannerImage: string, db: any): Promise<any>
 }
