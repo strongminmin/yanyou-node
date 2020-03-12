@@ -1,19 +1,170 @@
-import { Controller, BaseController, Inject, Get, Post } from 'kever'
+import { Controller, BaseController, Inject, Get, Post, Params } from 'kever'
+import { createResultDate } from '../utils'
 
 @Controller('/advisory')
 export default class AdvisoryController extends BaseController {
   @Inject('advisory')
   public advisoryService
+
   @Get('/advisory-list')
-  async getAdvisoryList() {}
+  async getAdvisoryList(@Params(['query']) params) {
+    let resultData
+    try {
+      const { page, count } = params
+      const result = await this.advisoryService.getAdvisoryList(page, count, this.ctx.db)
+      if (!result) {
+        throw new Error('热点列表获取失败')
+      }
+      resultData = createResultDate({
+        message: '热点获取列表获取成功',
+        data: result
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        message: err.message,
+        noerr: 1
+      })
+    }
+    this.ctx.body = resultData
+  }
+
   @Get('/advisory-details')
-  async getAdvisoryDetails() {}
-  @Post('/create-advisory')
-  async releaseAdvisory() {}
+  async getAdvisoryDetails(@Params(['query']) params) {
+    let resultData
+    try {
+      const { advisory_id: advisoryId } = params
+      const result = await this.advisoryService.getAdvisoryDetails(advisoryId, this.ctx.db)
+      if (!result) {
+        throw new Error('获取热点详情失败')
+      }
+      resultData = createResultDate({
+        message: '获取热点详情成功',
+        data: result
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
+
+  @Post('/release-advisory')
+  async releaseAdvisory(@Params(['body']) params) {
+    let resultData
+    try {
+      const {
+        advisory_tag: tag,
+        advisory_title: title,
+        advisory_banner: bannerUrl,
+        advisory_content: content,
+        advisory_source: source
+      } = params
+      const result = await this.advisoryService.createAdvisory(
+        {
+          tag,
+          title,
+          bannerUrl,
+          content,
+          source
+        },
+        this.ctx.db
+      )
+      if (!result) {
+        throw new Error('发布失败')
+      }
+      resultData = createResultDate({
+        message: '发布成功'
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
+
   @Post('/update-advisory')
-  async upateAdvisory() {}
+  async upateAdvisory(@Params(['body']) params) {
+    let resultData
+    try {
+      const {
+        advisory_tag: tag,
+        advisory_title: title,
+        advisory_banner: bannerUrl,
+        advisory_content: content,
+        advisory_source: source,
+        advisory_id: advisoryId
+      } = params
+      const result = await this.advisoryService.updateAdvisory(
+        advisoryId,
+        {
+          tag,
+          title,
+          bannerUrl,
+          content,
+          source
+        },
+        this.ctx.db
+      )
+      if (!result) {
+        throw new Error('更新热点信息失败')
+      }
+      resultData = createResultDate({
+        message: '更新热点信息成功'
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
+
   @Get('/advisory-access')
-  async addAdvisoryAccess() {}
+  async addAdvisoryAccess(@Params(['query']) params) {
+    let resultData
+    try {
+      const { advisory_id: advisoryId, key } = params
+      const result = await this.advisoryService.updateInfo(advisoryId, key, this.ctx.db)
+      if (!result) {
+        throw new Error('访问量增加失败')
+      }
+      resultData = createResultDate({
+        message: '访问量增加成功',
+        data: result
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
+
   @Get('/advisory-reward')
-  async addAdvisoryReward() {}
+  async addAdvisoryReward(@Params(['query']) params) {
+    let resultData
+    try {
+      const { advisory_id: advisoryId, key } = params
+      const result = await this.advisoryService.updateInfo(advisoryId, key, this.ctx.db)
+      if (!result) {
+        throw new Error('打赏次数失败')
+      }
+      resultData = createResultDate({
+        message: '打赏次数成功',
+        data: result
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
 }

@@ -4,9 +4,11 @@
 export interface AdvisoryInterface {
   /**
    * 获取热点列表，分页
+   * @param page
+   * @param count
    * @param db
    */
-  getAdvisoryList(db: any): Promise<any>
+  getAdvisoryList(page: number, count: number, db: any): Promise<any>
   /**
    * 获取热点详情
    * @param advisoryId
@@ -25,17 +27,13 @@ export interface AdvisoryInterface {
    * @param advisoryInfo
    * @param db
    */
-  updateAdvisoryInfo(advisoryId: number, advisoryInfo: Object, db: any): Promise<any>
+  updateAdvisory(advisoryId: number, advisoryInfo: Object, db: any): Promise<any>
   /**
-   * 热点访问量
-   * @param advisoryid
-   * @param db
-   */
-  advisoryAccess(advisoryId: number, db: any): Promise<any>
-  /**
-   * 热点打赏数
+   * 更新热点信息-单调
    * @param advisoryId
+   * @param key
+   * @param value
    * @param db
    */
-  advisoryReward(advisoryId: number, db: any): Promise<any>
+  updateInfo(advisoryId: number, key: string, db: any): Promise<any>
 }

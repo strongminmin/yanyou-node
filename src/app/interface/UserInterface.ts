@@ -4,11 +4,11 @@
 export interface UserInterface {
   /**
    * 登录
-   * @param username
+   * @param email
    * @param password
    * @param db
    */
-  login(username: string, password: string, db: any): Promise<any>
+  login(email: string, password: string, db: any): Promise<any>
   /**
    * 创建用户
    * @param email
@@ -32,10 +32,4 @@ export interface UserInterface {
    * @param db
    */
   updateUser(userId: number, key: string, value: string, db: any): Promise<any>
-  /**
-   * 删除一个用户
-   * @param userId
-   * @param db
-   */
-  deleteUser(userId: number, db: any): Promise<any>
 }
