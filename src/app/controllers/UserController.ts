@@ -5,6 +5,9 @@ import { createResultDate } from '../utils'
 export default class UserController extends BaseController {
   @Inject('user')
   public userService
+  @Inject('history')
+  public historyService
+
   @Get('/login')
   async login(@Params(['query']) params) {
     let resultData
@@ -62,6 +65,7 @@ export default class UserController extends BaseController {
       if (!result) {
         throw new Error('更新失败')
       }
+      this.historyService.createHistory(userId, '修改了基本信息', this.ctx.db)
       resultData = createResultDate({
         message: '更新成功'
       })

@@ -38,8 +38,7 @@ export default class AdvisoryController extends BaseController {
       if (!result) {
         throw new Error('获取热点详情失败')
       }
-      const a = await this.historyService.createHistory(userId, `浏览了热点：${result.advisory_title}的内容`, this.ctx.db)
-      console.log(a)
+      this.historyService.createHistory(userId, `浏览了热点：《${result.advisory_title}》的内容`, this.ctx.db)
       resultData = createResultDate({
         message: '获取热点详情成功',
         data: result

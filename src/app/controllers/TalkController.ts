@@ -11,6 +11,8 @@ export default class TalkController extends BaseController {
   public likeService
   @Inject('comment')
   public commentService
+  @Inject('history')
+  public historyService
 
   @Get('/talk-list')
   async getTalkList(@Params(['query']) params) {
@@ -58,11 +60,12 @@ export default class TalkController extends BaseController {
       } else if (!Array.isArray(images)) {
         images = [images]
       }
-      const { user_id: userid, content } = params
-      const result = await this.talkService.createTalk(userid, content, images, this.ctx.db)
+      const { user_id: userId, content } = params
+      const result = await this.talkService.createTalk(userId, content, images, this.ctx.db)
       if (!result) {
         throw new Error('发布失败')
       }
+      this.historyService.createHistory(userId, `发布了心情`, this.ctx.db)
       resultData = createResultDate({
         message: '发布成功'
       })

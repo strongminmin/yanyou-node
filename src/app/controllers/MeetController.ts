@@ -5,6 +5,8 @@ import { createResultDate } from '../utils'
 export default class MeetController extends BaseController {
   @Inject('meet')
   public meetService
+  @Inject('history')
+  public historyService
 
   @Get('/meet-list')
   async getMeetList() {
@@ -30,11 +32,12 @@ export default class MeetController extends BaseController {
   async getMeetDetails(@Params(['query']) params) {
     let resultData
     try {
-      const { meet_id: meetId } = params
+      const { user_id: userId, meet_id: meetId } = params
       const result = await this.meetService.getMeetDetails(meetId, this.ctx.db)
       if (!result) {
         throw new Error('获取会议详情失败')
       }
+      this.historyService.createHistory(userId, `浏览了校研会：《${result.meet_title}》的内容`, this.ctx.db)
       resultData = createResultDate({
         message: '获取会议详情成功',
         data: result

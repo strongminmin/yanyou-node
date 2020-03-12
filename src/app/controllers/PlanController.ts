@@ -4,6 +4,9 @@ import { createResultDate } from '../utils'
 export default class PlanController extends BaseController {
   @Inject('plan')
   public planService
+  @Inject('history')
+  public historyService
+
   @Get('/plan-list')
   async getPlanList(@Params(['query']) params) {
     let resultData
@@ -41,6 +44,7 @@ export default class PlanController extends BaseController {
       if (!result) {
         throw new Error('发布失败')
       }
+      this.historyService.createHistory(userId, `添加了${planMonth}月计划`, this.ctx.db)
       resultData = createResultDate({
         message: '发布成功'
       })

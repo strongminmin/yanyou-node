@@ -4,15 +4,19 @@ import { createResultDate } from '../utils'
 export default class ResourceController extends BaseController {
   @Inject('resource')
   public resourceService
+  @Inject('history')
+  public historyService
 
   @Get('/resource-list')
-  async getResourceList() {
+  async getResourceList(@Params(['query']) params) {
     let resultData
     try {
+      const { user_id: userId } = params
       const result = await this.resourceService.getResourceList(this.ctx.db)
       if (!result) {
         throw new Error('获取资源失败')
       }
+      this.historyService.createHistory(userId, '浏览了资料', this.ctx.db)
       resultData = createResultDate({
         message: '获取资源成功',
         data: result
