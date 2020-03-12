@@ -12,17 +12,18 @@ export interface ResourceInterface {
    * @param resourceInfo
    * @param db
    */
-  createResource(resourceInfo: object, db: any): Promise<any>
+  createResource(resourceInfo: any, db: any): Promise<any>
   /**
    * 更新资源
    * @param resourceId
    * @param resourceInfo
    * @param db
    */
-  updateResource(resourceId: number, resourceInfo: object, db: any): Promise<any>
+  updateResource(resourceId: number, resourceInfo: any, db: any): Promise<any>
   /**
    * 删除资源
    * @param resourceId
+   * @param db
    */
-  deleteResource(resourceId: number): Promise<any>
+  deleteResource(resourceId: number, db: any): Promise<any>
 }
