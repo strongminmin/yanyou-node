@@ -18,18 +18,24 @@ export interface MeetInterface {
    * @param meetInfo
    * @param db
    */
-  createMeetDetails(meetInfo: object, db: any): Promise<any>
+  createMeetDetails(meetInfo: any, db: any): Promise<any>
   /**
    * 更新会议信息
    * @param meetId
    * @param meetInfo
    * @param db
    */
-  updateMeetDetails(meetId: number, meetInfo: object, db: any): Promise<any>
+  updateMeetDetails(meetId: number, meetInfo: any, db: any): Promise<any>
   /**
    * 访问量
    * @param meetId
    * @param db
    */
-  meetAccess(meetId: number, db: any): Promise<any>
+  meetAccess(meetId: number, value: number, db: any): Promise<any>
+  /**
+   *
+   * @param meetId
+   * @param db
+   */
+  deleteMeet(meetId: number, db: any): Promise<any>
 }

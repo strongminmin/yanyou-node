@@ -123,29 +123,6 @@ export default class AdvisoryController extends BaseController {
     }
     this.ctx.body = resultData
   }
-
-  @Get('/advisory-access')
-  async addAdvisoryAccess(@Params(['query']) params) {
-    let resultData
-    try {
-      const { advisory_id: advisoryId, key } = params
-      const result = await this.advisoryService.updateInfo(advisoryId, key, this.ctx.db)
-      if (!result) {
-        throw new Error('访问量增加失败')
-      }
-      resultData = createResultDate({
-        message: '访问量增加成功',
-        data: result
-      })
-    } catch (err) {
-      resultData = createResultDate({
-        noerr: 1,
-        message: err.message
-      })
-    }
-    this.ctx.body = resultData
-  }
-
   @Get('/advisory-reward')
   async addAdvisoryReward(@Params(['query']) params) {
     let resultData

@@ -6,7 +6,8 @@ export default class PlanService implements PlanInterface {
   async getPlanList(userId: number, db: any): Promise<any> {
     try {
       const selectSentence = 'select * from plan where user_id = ?'
-      const [rows] = await db.query(selectSentence, [userId])
+      let [rows] = await db.query(selectSentence, [userId])
+      rows = rows.sort((a, b) => b.create_time - a.create_time)
       const result = rows.reduce((res, item) => {
         const month = item.plan_month
         item.create_time = beforeTime(item.create_time)

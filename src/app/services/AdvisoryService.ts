@@ -1,14 +1,21 @@
 import { Injectable } from 'kever'
 import { AdvisoryInterface } from '../interface'
-import { baseUrlToOOS, uploadOss } from '../utils'
+import { baseUrlToOOS, uploadOss, beforeTime } from '../utils'
 
 @Injectable('advisory')
 export default class AdvisoryService implements AdvisoryInterface {
   async getAdvisoryList(page: number, count: number, db: any): Promise<any> {
     try {
       const selectSentence = `select * from advisory limit ${(page - 1) * count},${count}`
-      const [rows] = await db.query(selectSentence)
-      return rows
+      let [rows] = await db.query(selectSentence)
+      rows = rows.sort((a, b) => b.create_time - a.create_time)
+      const result = rows.map(item => {
+        const time = beforeTime(item.create_time)
+        return Object.assign(item, {
+          create_time: time
+        })
+      })
+      return result
     } catch (err) {
       return false
     }
@@ -18,7 +25,10 @@ export default class AdvisoryService implements AdvisoryInterface {
     try {
       const selectSentence = 'select * from advisory where advisory_id = ?'
       const [rows] = await db.query(selectSentence, [advisoryId])
-      return rows[0]
+      let result = rows[0]
+      result.create_time = beforeTime(result.create_time)
+      this.updateInfo(result.advisory_id, 'advisory_access', db)
+      return result
     } catch (err) {
       return false
     }
