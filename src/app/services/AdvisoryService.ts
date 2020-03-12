@@ -48,7 +48,7 @@ export default class AdvisoryService implements AdvisoryInterface {
         advisoryInfo.source,
         createTime
       ])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -78,7 +78,7 @@ export default class AdvisoryService implements AdvisoryInterface {
         createTime,
         advisoryId
       ])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -94,7 +94,7 @@ export default class AdvisoryService implements AdvisoryInterface {
       console.log(slelectRows)
       const value = +slelectRows[0][key] + 1
       const [rows] = await db.query(updateSentence, [value, advisoryId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return value
       }
       return false

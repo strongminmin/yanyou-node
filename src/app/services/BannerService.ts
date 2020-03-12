@@ -17,7 +17,7 @@ export default class BannerService implements BannerInterface {
     try {
       const deleteSentence = 'delete from banner where banner_id = ?'
       const [rows] = await db.query(deleteSentence, [bannerId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -30,7 +30,7 @@ export default class BannerService implements BannerInterface {
       const bannerUrl = await baseUrlToOOS('banner', bannerImage)
       const insertSentence = 'insert into banner(banner_url) values(?)'
       const [rows] = await db.query(insertSentence, [bannerUrl])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

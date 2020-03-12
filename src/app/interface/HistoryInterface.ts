@@ -20,5 +20,5 @@ export interface HistoryInterface {
    * @param userId
    * @param db
    */
-  clearnHistory(userId: number, db: any): Promise<any>
+  cleanHistory(userId: number, db: any): Promise<any>
 }

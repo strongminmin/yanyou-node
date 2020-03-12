@@ -8,7 +8,7 @@ export default class CheckService implements CheckInterface {
       const createTime = Date.now()
       const insertSentence = 'insert into checks(user_id,create_time) values(?,?)'
       const [rows] = await db.query(insertSentence, [userId, createTime])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

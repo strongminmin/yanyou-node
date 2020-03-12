@@ -17,7 +17,7 @@ export default class UserService implements UserInterface {
     try {
       const insertSentence = 'insert into user(user_email,user_name,user_password) values(?,?,?)'
       const [rows] = await db.query(insertSentence, [email, username, password])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -42,7 +42,7 @@ export default class UserService implements UserInterface {
       }
       const updateSentence = `update user set ${key}=? where user_id = ?`
       const [rows] = await db.query(updateSentence, [value, userId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

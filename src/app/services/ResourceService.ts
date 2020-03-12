@@ -25,7 +25,7 @@ export default class PlanService implements ResourceInterface {
     try {
       const insertSentence = 'insert into resource(resource_type,resource_title,resource_url,resource_ident) value(?,?,?,?)'
       const [rows] = await db.query(insertSentence, [resourceInfo.type, resourceInfo.title, resourceInfo.url, resourceInfo.ident])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -49,7 +49,7 @@ export default class PlanService implements ResourceInterface {
         resourceInfo.ident,
         resourceId
       ])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -62,7 +62,7 @@ export default class PlanService implements ResourceInterface {
     try {
       const deleteSentence = 'delete from resource where resource_id = ?'
       const [rows] = await db.query(deleteSentence, [resourceId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

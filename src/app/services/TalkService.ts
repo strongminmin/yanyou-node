@@ -30,7 +30,7 @@ export default class TalkService implements TalkInterface {
       const createTime = Date.now()
       const insertSentence = 'insert into(user_id,talk_content,create_time) values(?,?,?)'
       const [rows] = await db.query(insertSentence, [userId, talkContnet, createTime])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -42,7 +42,7 @@ export default class TalkService implements TalkInterface {
     try {
       const deleteSentence = 'delete from talk where talk_id = ?'
       const [rows] = await db.query(deleteSentence, [talkId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -57,7 +57,7 @@ export default class TalkService implements TalkInterface {
       const [talkInfo] = await db.query(selectSentence, [talkId])
       const talkstatus = talkInfo.talk_status == 1 ? 0 : 1
       const [rows] = await db.query(updateSentence, [talkstatus, talkId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

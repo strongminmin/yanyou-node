@@ -23,9 +23,9 @@ export default class HistoryService implements HistoryInterface {
   async createHistory(userId: number, content: string, db: any): Promise<any> {
     try {
       const createTime = Date.now()
-      const insertSentence = 'inert into history(user_id,history_content,create_time) values(?,?,?)'
+      const insertSentence = 'insert into history(user_id,history_content,create_time) values(?,?,?)'
       const [rows] = await db.query(insertSentence, [userId, content, createTime])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -33,15 +33,17 @@ export default class HistoryService implements HistoryInterface {
       return false
     }
   }
-  async clearnHistory(userId: number, db: any): Promise<any> {
+  async cleanHistory(userId: number, db: any): Promise<any> {
     try {
       const deleteSentence = 'delete from history where user_id = ?'
       const [rows] = await db.query(deleteSentence, [userId])
-      if (rows.affectedRows == 1) {
+      console.log(rows)
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
     } catch (err) {
+      console.log(err)
       return false
     }
   }

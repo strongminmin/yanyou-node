@@ -5,7 +5,8 @@ import { createResultDate } from '../utils'
 export default class AdvisoryController extends BaseController {
   @Inject('advisory')
   public advisoryService
-
+  @Inject('history')
+  public historyService
   @Get('/advisory-list')
   async getAdvisoryList(@Params(['query']) params) {
     let resultData
@@ -32,11 +33,13 @@ export default class AdvisoryController extends BaseController {
   async getAdvisoryDetails(@Params(['query']) params) {
     let resultData
     try {
-      const { advisory_id: advisoryId } = params
+      const { user_id: userId, advisory_id: advisoryId } = params
       const result = await this.advisoryService.getAdvisoryDetails(advisoryId, this.ctx.db)
       if (!result) {
         throw new Error('获取热点详情失败')
       }
+      const a = await this.historyService.createHistory(userId, `浏览了热点：${result.advisory_title}的内容`, this.ctx.db)
+      console.log(a)
       resultData = createResultDate({
         message: '获取热点详情成功',
         data: result

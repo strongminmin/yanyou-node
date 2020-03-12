@@ -29,7 +29,7 @@ export default class LikeService implements LikeInterface {
       }
       const [rows] = await db.query(sentence, [type, userId, targetId])
       const likeInfo = await this.getLike(type, userId, targetId, db)
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return likeInfo
       }
       return false
@@ -53,7 +53,7 @@ export default class LikeService implements LikeInterface {
     try {
       const deleteSentence = 'delete from like where like_type = ? and target_id = ?'
       const [rows] = await db.query(deleteSentence, [type, targetId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

@@ -28,7 +28,7 @@ export default class PlanService implements PlanInterface {
       const createTime = Date.now()
       const insertSentence = 'insert into plan(user_id,plan_month,plan_content,create_time) values(?,?,?,?)'
       const [rows] = await db.query(insertSentence, [userId, planInfo.month, planInfo.content, createTime])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -41,7 +41,7 @@ export default class PlanService implements PlanInterface {
     try {
       const deleteSentence = 'delete from plan where plan_id = ?'
       const [rows] = await db.query(deleteSentence, [planId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

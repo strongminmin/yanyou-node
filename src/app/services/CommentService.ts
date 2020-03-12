@@ -26,7 +26,7 @@ export default class CommentService implements CommentInterface {
       const createTime = Date.now()
       const insertSentence = 'insert into comment(user_id,talk_id,comment_content,create_time) values(?,?,?,?)'
       const [rows] = await db.query(insertSentence, [commentInfo.userId, commentInfo.talkId, commentInfo.commentContent, createTime])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -39,7 +39,7 @@ export default class CommentService implements CommentInterface {
     try {
       const deleteSentence = 'delete from comment where talk_id = ?'
       const [rows] = await db.query(deleteSentence, [talkId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

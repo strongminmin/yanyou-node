@@ -39,7 +39,7 @@ export default class MeetService implements MeetInterface {
       const createTime = Date.now()
       const insertSentence = 'insert into schoolmeet(meet_title,meet_content,create_time) values(?,?,?)'
       const [rows] = await db.query(insertSentence, [meetInfo.title, meetInfo.content, createTime])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -55,7 +55,7 @@ export default class MeetService implements MeetInterface {
       meet_content = ? where meet_id = ?
       `
       const [rows] = await db.query(updateSentenct, [meetInfo.title, meetInfo.content, meetId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -69,7 +69,7 @@ export default class MeetService implements MeetInterface {
     try {
       const updateSentence = 'update schoolmeet set meet_access = ? where meet_id = ?'
       const [rows] = await db.query(updateSentence, [value, meetId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false
@@ -81,7 +81,7 @@ export default class MeetService implements MeetInterface {
     try {
       const deleteSentence = 'delete from schoolmeet where meet_id = ?'
       const [rows] = await db.query(deleteSentence, [meetId])
-      if (rows.affectedRows == 1) {
+      if (rows.affectedRows > 0) {
         return true
       }
       return false

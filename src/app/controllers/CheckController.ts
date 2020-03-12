@@ -5,6 +5,8 @@ import { ResultData } from '../interface'
 export default class CheckController extends BaseController {
   @Inject('check')
   public checkService
+  @Inject('history')
+  public historyService
   public data: ResultData = {
     noerr: 0,
     message: '',
@@ -19,6 +21,8 @@ export default class CheckController extends BaseController {
       if (!result) {
         throw new Error('打卡失败')
       }
+      // 打卡记录
+      this.historyService.createHistory(userId, '进行了打卡', this.ctx.db)
       resultData = Object.assign({}, this.data, {
         message: '打卡成功',
         data: result
