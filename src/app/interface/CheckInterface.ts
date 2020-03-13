@@ -13,7 +13,7 @@ export interface CheckInterface {
    * @param userId
    * @param db
    */
-  getCheckNum(userId: number, db: any): Promise<any>
+  todayCheck(userId: number, db: any): Promise<any>
   /**
    * 获取打卡记录
    * @param userId

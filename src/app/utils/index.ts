@@ -45,8 +45,8 @@ export const uploadOss = async (dir: string, files: Array<File>) => {
   try {
     for (let i = 0; i < files.length; i++) {
       const file = files[i] as any
-      const { res } = await client.multipartUpload(`yanyou/${dir}/${file.name}`, file.path)
-      filesPath.push(res.requestUrls[0].split('?')[0])
+      const res = await client.put(`yanyou/${dir}/${file.name}`, file.path)
+      filesPath.push(res.url)
     }
     return filesPath
   } catch (err) {

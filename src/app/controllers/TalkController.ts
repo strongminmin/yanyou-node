@@ -19,24 +19,30 @@ export default class TalkController extends BaseController {
     let resultData
     try {
       const { user_id: userId, page, count } = params
-      const talkList = this.talkService.getTalkList(page, count, this.ctx.db)
+      const talkList = await this.talkService.getTalkList(page, count, this.ctx.db)
       const talksUserInfoPromise: Array<Promise<any>> = talkList.map(talk => {
         return this.userService.findUser('user_id', talk.user_id, this.ctx.db)
       })
       const talksUserLikePromise: Array<Promise<any>> = talkList.map(talk => {
         return this.likeService.getLike(0, userId, talk.talk_id, this.ctx.db)
       })
+      const talkCommentCountPromise: Array<Promise<any>> = talkList.map(talk => {
+        return this.commentService.getCommentCount(talk.talk_id, this.ctx.db)
+      })
       const talksUserInfo = await Promise.all(talksUserInfoPromise)
       const talksUserLike = await Promise.all(talksUserLikePromise)
+      const talkCommentCount = await Promise.all(talkCommentCountPromise)
       const result = talkList.map((talk, idx) => {
         const userInfo = talksUserInfo[idx]
         const userLike = talksUserLike[idx]
+        const commentCount = talkCommentCount[idx]
         return Object.assign(talk, {
           user_name: userInfo.user_name,
           user_image: userInfo.user_image,
-          like: userLike
+          like: userLike,
+          comment: commentCount
         })
-      })
+      }).filter(item => item.talk_status == 0)
       resultData = createResultDate({
         message: '获取心情列表成功',
         data: result
@@ -82,8 +88,8 @@ export default class TalkController extends BaseController {
   async talkLike(@Params(['query']) params) {
     let resultData
     try {
-      const { user_id: userId, target_id: targetId } = params
-      const result = await this.likeService.likeAction(0, userId, targetId, this.ctx.db)
+      const { user_id: userId, target_id: targetId, type } = params
+      const result = await this.likeService.likeAction(type, userId, targetId, this.ctx.db)
       if (!result) {
         throw new Error('请求失败')
       }
@@ -147,11 +153,12 @@ export default class TalkController extends BaseController {
         },
         this.ctx.db
       )
-      if (!result) {
+      if (result === false) {
         throw new Error('评论失败')
       }
       resultData = createResultDate({
-        message: '评论成功'
+        message: '评论成功',
+        data: result
       })
     } catch (err) {
       resultData = createResultDate({

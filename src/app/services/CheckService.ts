@@ -25,10 +25,10 @@ export default class CheckService implements CheckInterface {
         const year = date.getFullYear()
         const month = date.getMonth() + 1
         const day = date.getDate()
-        const time = date.toLocaleTimeString()
         return Object.assign(row, {
-          create_date: `${year}年${month}月${day}日`,
-          create_time: time
+          year,
+          month,
+          day
         })
       })
       return result
@@ -36,11 +36,27 @@ export default class CheckService implements CheckInterface {
       return false
     }
   }
-  async getCheckNum(userId: number, db: any): Promise<any> {
+  async todayCheck(userId: number, db: any): Promise<any> {
     try {
-      const selectSentence = 'select * from checks where user_id = ?'
+      const selectSentence = 'select max(create_time) from checks where user_id = ?'
       const [rows] = await db.query(selectSentence, [userId])
-      return rows.length
+      if (rows.length == 0) {
+        return false
+      }
+      const targetTime = rows[0]['max(create_time)'];
+      const targetDate = new Date(+targetTime)
+      const targetYear = targetDate.getFullYear();
+      const targetMonth = targetDate.getMonth();
+      const targetDay = targetDate.getDate();
+      const nowDate = new Date(Date.now())
+      const nowYear = nowDate.getFullYear();
+      const nowMonth = nowDate.getMonth();
+      const nowDay = nowDate.getDate()
+      let checked = false;
+      if (targetYear === nowYear && targetMonth === nowMonth && targetDay === nowDay) {
+        checked = true
+      }
+      return checked
     } catch (err) {
       return false
     }

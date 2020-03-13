@@ -6,9 +6,8 @@ import { uploadOss, beforeTime } from '../utils'
 export default class TalkService implements TalkInterface {
   async getTalkList(page: number, count: number, db: any): Promise<any> {
     try {
-      const selectSentence = `select * from talk limit ${(page - 1) * count}, ${count}`
+      const selectSentence = `select * from talk  order by create_time desc limit ${(page - 1) * count}, ${count}`
       let [rows] = await db.query(selectSentence)
-      rows = rows.sort((a, b) => b.create_time - a.create_time)
       const result = rows.map(item => {
         const time = beforeTime(item.create_time)
         return Object.assign(item, {
@@ -28,13 +27,14 @@ export default class TalkService implements TalkInterface {
         images: filesPath
       })
       const createTime = Date.now()
-      const insertSentence = 'insert into(user_id,talk_content,create_time) values(?,?,?)'
+      const insertSentence = 'insert into talk(user_id,talk_content,create_time) values(?,?,?)'
       const [rows] = await db.query(insertSentence, [userId, talkContnet, createTime])
       if (rows.affectedRows > 0) {
         return true
       }
       return false
     } catch (err) {
+      console.log(err);
       return false
     }
   }

@@ -6,9 +6,8 @@ import { beforeTime } from '../utils'
 export default class CommentService implements CommentInterface {
   async getCommentList(page: number, count: number, talkId: number, db: any): Promise<any> {
     try {
-      const selectSentence = `select * from comment limit ${(page - 1) * count}, ${count} where talk_id = ?`
+      const selectSentence = `select * from comment where talk_id = ? order by create_time desc limit ${(page - 1) * count}, ${count} `
       let [rows] = await db.query(selectSentence, [talkId])
-      rows = rows.sort((a, b) => b.create_time - a.create_time)
       const result = rows.map(item => {
         const time = beforeTime(item.create_time)
         return Object.assign(item, {
@@ -17,6 +16,7 @@ export default class CommentService implements CommentInterface {
       })
       return result
     } catch (err) {
+      console.log(err);
       return false
     }
   }
@@ -25,12 +25,15 @@ export default class CommentService implements CommentInterface {
     try {
       const createTime = Date.now()
       const insertSentence = 'insert into comment(user_id,talk_id,comment_content,create_time) values(?,?,?,?)'
-      const [rows] = await db.query(insertSentence, [commentInfo.userId, commentInfo.talkId, commentInfo.commentContent, createTime])
+      const [rows] = await db.query(insertSentence, [commentInfo.userId, commentInfo.targetId, commentInfo.commentContent, createTime])
+      const count = await this.getCommentCount(commentInfo.targetId, db);
+      console.log(count)
       if (rows.affectedRows > 0) {
-        return true
+        return count
       }
       return false
     } catch (err) {
+      console.log(err);
       return false
     }
   }
@@ -45,6 +48,15 @@ export default class CommentService implements CommentInterface {
       return false
     } catch (err) {
       return false
+    }
+  }
+  async getCommentCount(talkId: number, db: any): Promise<any> {
+    try {
+      const selectSentence = 'select * from comment where talk_id = ?'
+      const [rows] = await db.query(selectSentence, [talkId])
+      return rows.length;
+    } catch (err) {
+      return 0;
     }
   }
 }

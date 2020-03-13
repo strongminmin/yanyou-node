@@ -6,9 +6,8 @@ import { beforeTime } from '../utils'
 export default class HistoryService implements HistoryInterface {
   async getHistoryList(userId: number, db: any): Promise<any> {
     try {
-      const selectSentence = 'select * from history where user_id = ?'
+      const selectSentence = 'select * from history where user_id = ? order by create_time desc'
       let [rows] = await db.query(selectSentence, [userId])
-      rows = rows.sort((a, b) => b.create_time - a.create_time)
       const result = rows.map(item => {
         const time = beforeTime(item.create_time)
         return Object.assign(item, {

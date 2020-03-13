@@ -129,8 +129,8 @@ export default class AdvisoryController extends BaseController {
   async addAdvisoryReward(@Params(['query']) params) {
     let resultData
     try {
-      const { advisory_id: advisoryId, key } = params
-      const result = await this.advisoryService.updateInfo(advisoryId, key, this.ctx.db)
+      const { advisory_id: advisoryId, } = params
+      const result = await this.advisoryService.updateInfo(advisoryId, 'advisory_reward', this.ctx.db)
       if (!result) {
         throw new Error('打赏次数失败')
       }

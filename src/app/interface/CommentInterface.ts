@@ -20,4 +20,10 @@ export interface CommentInterface {
    * @param db
    */
   deleteComment(talkId: number, db: any): Promise<any>
+  /**
+   * 获取talk有多少条评论
+   * @param talkId 
+   * @param db 
+   */
+  getCommentCount(talkId: number, db: any): Promise<any>
 }

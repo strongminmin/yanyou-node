@@ -1,5 +1,6 @@
 import { Controller, BaseController, Inject, Get, Params } from 'kever'
 import { ResultData } from '../interface'
+import { createResultDate } from '../utils'
 
 @Controller('/check')
 export default class CheckController extends BaseController {
@@ -55,5 +56,23 @@ export default class CheckController extends BaseController {
       })
     }
     this.ctx.body = resultData
+  }
+  @Get('/checked')
+  async getTodayChecked(@Params(['query']) params) {
+    let resultData
+    try {
+      const { user_id: userId } = params;
+      const result = await this.checkService.todayCheck(userId, this.ctx.db)
+      resultData = createResultDate({
+        message: '请求成功',
+        data: result
+      })
+    } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData;
   }
 }

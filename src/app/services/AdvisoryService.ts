@@ -6,9 +6,8 @@ import { baseUrlToOOS, uploadOss, beforeTime } from '../utils'
 export default class AdvisoryService implements AdvisoryInterface {
   async getAdvisoryList(page: number, count: number, db: any): Promise<any> {
     try {
-      const selectSentence = `select * from advisory limit ${(page - 1) * count},${count}`
+      const selectSentence = `select * from advisory order by create_time desc limit ${(page - 1) * count},${count}`
       let [rows] = await db.query(selectSentence)
-      rows = rows.sort((a, b) => b.create_time - a.create_time)
       const result = rows.map(item => {
         const time = beforeTime(item.create_time)
         return Object.assign(item, {

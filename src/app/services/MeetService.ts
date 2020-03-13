@@ -6,9 +6,8 @@ import { beforeTime } from '../utils'
 export default class MeetService implements MeetInterface {
   async getMeetList(db: any): Promise<any> {
     try {
-      const selectSentence = 'select * from schoolmeet'
+      const selectSentence = 'select * from schoolmeet order by create_time desc'
       let [rows] = await db.query(selectSentence)
-      rows = rows.sort((a, b) => b.create_time - a.create_time)
       const result = rows.map(item => {
         const time = beforeTime(item.create_time)
         return Object.assign(item, {
