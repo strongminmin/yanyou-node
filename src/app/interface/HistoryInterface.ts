@@ -7,7 +7,7 @@ export interface HistoryInterface {
    * @param userId
    * @param db
    */
-  getHistoryList(userId: number, db: any): Promise<any>
+  getHistoryList(userId: number, page: number, count: number, db: any): Promise<any>
   /**
    * 生成一条浏览记录
    * @param user_id

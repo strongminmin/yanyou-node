@@ -9,8 +9,8 @@ export default class HistoryController extends BaseController {
   async getHistoryList(@Params(['query']) params) {
     let resultData
     try {
-      const { user_id: userId } = params
-      const result = await this.historyService.getHistoryList(userId, this.ctx.db)
+      const { user_id: userId, page, count } = params
+      const result = await this.historyService.getHistoryList(userId, page, count, this.ctx.db)
       if (!result) {
         throw new Error('请求失败')
       }

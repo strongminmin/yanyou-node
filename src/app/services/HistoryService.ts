@@ -4,9 +4,9 @@ import { beforeTime } from '../utils'
 
 @Injectable('history')
 export default class HistoryService implements HistoryInterface {
-  async getHistoryList(userId: number, db: any): Promise<any> {
+  async getHistoryList(userId: number, page: number, count: number, db: any): Promise<any> {
     try {
-      const selectSentence = 'select * from history where user_id = ? order by create_time desc'
+      const selectSentence = `select * from history where user_id = ? order by create_time desc limit ${(page - 1) * count},${count}`
       let [rows] = await db.query(selectSentence, [userId])
       const result = rows.map(item => {
         const time = beforeTime(item.create_time)
