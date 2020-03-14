@@ -18,8 +18,13 @@ export default class TalkController extends BaseController {
   async getTalkList(@Params(['query']) params) {
     let resultData
     try {
-      const { user_id: userId, page, count } = params
-      const talkList = await this.talkService.getTalkList(page, count, this.ctx.db)
+      const { user_id: userId, page, count, type } = params
+      let talkList
+      if (type == 'all') {
+        talkList = await this.talkService.getTalkList(page, count, this.ctx.db)
+      } else {
+        talkList = await this.talkService.getTalkSelfList(userId, page, count, this.ctx.db)
+      }
       const talksUserInfoPromise: Array<Promise<any>> = talkList.map(talk => {
         return this.userService.findUser('user_id', talk.user_id, this.ctx.db)
       })
@@ -42,7 +47,7 @@ export default class TalkController extends BaseController {
           like: userLike,
           comment: commentCount
         })
-      }).filter(item => item.talk_status == 0)
+      })
       resultData = createResultDate({
         message: '获取心情列表成功',
         data: result

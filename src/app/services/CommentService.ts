@@ -41,13 +41,16 @@ export default class CommentService implements CommentInterface {
   async deleteComment(talkId: number, db: any): Promise<any> {
     try {
       const deleteSentence = 'delete from comment where talk_id = ?'
+      const selectSentence = 'select comment_id where talk_id = ?'
+      const [commentInfo] = await db.query(deleteSentence, [talkId])
       const [rows] = await db.query(deleteSentence, [talkId])
+      const commentIds = commentInfo.map(item => item.comment_id);
       if (rows.affectedRows > 0) {
-        return true
+        return commentIds
       }
-      return false
+      return []
     } catch (err) {
-      return false
+      return []
     }
   }
   async getCommentCount(talkId: number, db: any): Promise<any> {

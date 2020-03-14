@@ -13,6 +13,21 @@ export default class TalkService implements TalkInterface {
         return Object.assign(item, {
           create_time: time
         })
+      }).filter(item => item.talk_status == 0)
+      return result
+    } catch (err) {
+      return false
+    }
+  }
+  async getTalkSelfList(userId: number, page: number, count: number, db: any): Promise<any> {
+    try {
+      const selectSentence = `select * from talk  where user_id = ? order by create_time desc limit ${(page - 1) * count}, ${count}`
+      let [rows] = await db.query(selectSentence, [userId])
+      const result = rows.map(item => {
+        const time = beforeTime(item.create_time)
+        return Object.assign(item, {
+          create_time: time
+        })
       })
       return result
     } catch (err) {

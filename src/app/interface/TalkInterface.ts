@@ -10,6 +10,14 @@ export interface TalkInterface {
    */
   getTalkList(page: number, count: number, db: any): Promise<any>
   /**
+   * 获取自己发布的心情
+   * @param userId 
+   * @param page 
+   * @param count 
+   * @param db 
+   */
+  getTalkSelfList(userId: number, page: number, count: number, db: any): Promise<any>
+  /**
    * 创建一条说说
    * @param userid
    * @param content
