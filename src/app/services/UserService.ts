@@ -47,6 +47,7 @@ export default class UserService implements UserInterface {
       }
       return false
     } catch (err) {
+      console.log(err);
       return false
     }
   }

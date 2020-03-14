@@ -20,13 +20,16 @@ export default class UserController extends BaseController {
       if (!result) {
         throw new Error('登录失败')
       }
+      if (result.user_status == 1) {
+        throw new Error('该用户被禁用，请联系管理员处理相关信息。')
+      }
       resultData = createResultDate({
         message: '登录成功',
         data: result
       })
     } catch (err) {
       resultData = createResultDate({
-        noerr: 0,
+        noerr: 1,
         message: err.message
       })
     }
