@@ -36,14 +36,15 @@ export default class UserService implements UserInterface {
   }
   async updateUser(userId: number, key: string, value: string | File, db: any): Promise<any> {
     try {
+      let filesPath
       if (key === 'user_image') {
-        const filesPath = await uploadOss('user', [value as File])
+        filesPath = await uploadOss('user', [value as File])
         value = filesPath[0]
       }
       const updateSentence = `update user set ${key}=? where user_id = ?`
       const [rows] = await db.query(updateSentence, [value, userId])
       if (rows.affectedRows > 0) {
-        return true
+        return value
       }
       return false
     } catch (err) {

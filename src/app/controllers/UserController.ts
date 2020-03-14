@@ -60,9 +60,9 @@ export default class UserController extends BaseController {
     let resultData
     try {
       let { user_id: userId, key, value } = params
-      const request = this.ctx.request as any
       if (key === 'user_image') {
-        value = request.files['images']
+        const request = this.ctx.request as any;
+        value = request.files['value'];
       }
       const result = await this.userService.updateUser(userId, key, value, this.ctx.db)
       if (!result) {
@@ -70,7 +70,8 @@ export default class UserController extends BaseController {
       }
       this.historyService.createHistory(userId, '修改了基本信息', this.ctx.db)
       resultData = createResultDate({
-        message: '更新成功'
+        message: '更新成功',
+        data: result
       })
     } catch (err) {
       resultData = createResultDate({
