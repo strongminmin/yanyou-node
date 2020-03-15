@@ -4,10 +4,15 @@ import { uploadOss } from '../utils'
 
 @Injectable('user')
 export default class UserService implements UserInterface {
-  async login(email: string, password: string, db: any): Promise<any> {
+  async login(platform:string,key: string, value: string, db: any): Promise<any> {
     try {
-      const selectSentence = 'select * from user where user_email = ? and user_password = ?'
-      const [rows] = await db.query(selectSentence, [email, password])
+      let selectSentence;
+      if(platform === 'mobile'){
+        selectSentence = 'select * from user where user_email = ? and user_password = ?'
+      } else {
+        selectSentence = 'select * from admin where user_name = ? and user_password = ?'
+      }
+      const [rows] = await db.query(selectSentence, [key, value])
       return rows[0]
     } catch (err) {
       return false

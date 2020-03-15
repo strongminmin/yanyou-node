@@ -8,7 +8,7 @@ export interface UserInterface {
    * @param password
    * @param db
    */
-  login(email: string, password: string, db: any): Promise<any>
+  login(platform:string,key: string, value: string, db: any): Promise<any>
   /**
    * 创建用户
    * @param email

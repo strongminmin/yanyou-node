@@ -8,13 +8,20 @@ export default class UserController extends BaseController {
   @Inject('history')
   public historyService
 
-  @Get('/login')
-  async login(@Params(['query']) params) {
+  @Post('/login')
+  async login(@Params(['body']) params) {
     let resultData
     try {
-      const { user_email: email, user_password: password } = params
-      const result = await this.userService.login(email, password, this.ctx.db)
-      if (result === undefined) {
+      const { user_email: email, user_password: password,platform,user_name:username } = params
+      let key:string
+      let value:string = password
+      if(platform === 'mobile') {
+        key = email
+      } else {
+        key = username
+      }
+      const result = await this.userService.login(platform,key, value, this.ctx.db)
+      if (result === undefined && platform === 'mobile') {
         throw new Error('您输入的邮箱未注册')
       }
       if (!result) {
