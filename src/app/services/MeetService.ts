@@ -85,6 +85,7 @@ export default class MeetService implements MeetInterface {
       }
       return false
     } catch (err) {
+      console.log(err)
       return false
     }
   }

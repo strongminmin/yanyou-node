@@ -36,4 +36,10 @@ export interface AdvisoryInterface {
    * @param db
    */
   updateInfo(advisoryId: number, key: string, db: any): Promise<any>
+  /**
+   * 删除一个热点
+   * @param advisoryId
+   * @param db
+   */
+  deleteAdvisory(advisoryId:number, db:any):Promise<any> 
 }

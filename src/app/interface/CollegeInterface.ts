@@ -4,61 +4,31 @@
 export interface CollegeInterface {
   /**
    * 获取院校列表
-   * @param db
    */
-  getCollegeBaseList(db: any): Promise<any>
+  getCollegeList(db: any): Promise<any> 
   /**
-   * 获取院校信息Item详情
-   * @param type
-   * @param collegeId
-   * @param db
+   * 获取院校详情
+   * @param collegeId 
+   * @param db 
    */
-  getCollegeItemDetails(type: number, collegeId: number, db: any): Promise<any>
+  getCollegeDetails(collegeId: number, db: any): Promise<any> 
   /**
-   * 获取院校基础信息详情
-   * @param collegeId
-   * @param db
+   * 创建院校
+   * @param collegeInfo 
+   * @param db 
    */
-  getCollegeBaseDetails(collegeId: number, db: any): Promise<any>
+  createCollege(collegeInfo: Object, db: any): Promise<any> 
   /**
-   *获取院校Item信息详情
-   * @param type
-   * @param collegeId
-   * @param db
+   * 更新院校信息
+   * @param collegeId 
+   * @param collegeInfo 
+   * @param db 
    */
-  createCollegeBase(collegeInfo: Object, db: any): Promise<any>
+  updateCollege(collegeId: number, collegeInfo: Object, db: any): Promise<any> 
   /**
-   * 创建一条院校Item信息
-   * @param type
-   * @param collegeItemInfo
-   * @param db
+   * 删除院校信息
+   * @param collegeId 
+   * @param db 
    */
-  createCollegeBaseItem(type: number, collegeId: number, collegeItemInfo: any, db: any): Promise<any>
-  /**
-   * 更新院校基础信息
-   * @param collegeId
-   * @param collegeInfo
-   * @param db
-   */
-  updateCollegeBase(collegeId: number, collegeInfo: Object, db: any): Promise<any>
-  /**
-   * 更新院校Item信息
-   * @param type
-   * @param collegeItemInfo
-   * @param db
-   */
-  updateCollegeItem(type: number, collegeId: number, collegeItemInfo: any, db: any): Promise<any>
-  /**
-   * 删除一条院校基础信息
-   * @param collegeId
-   * @param db
-   */
-  deteleCollegeBase(collegeId: number, db: any): Promise<any>
-  /**
-   * 删除一条院校Item信息
-   * @param type
-   * @param collegeId
-   * @param db
-   */
-  deleteCollegeItem(type: number, collegeId: number, db: any): Promise<any>
+  deteleCollege(collegeId: number, db: any): Promise<any> 
 }

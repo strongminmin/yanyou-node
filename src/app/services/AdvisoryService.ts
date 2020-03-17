@@ -59,7 +59,12 @@ export default class AdvisoryService implements AdvisoryInterface {
   async updateAdvisory(advisoryId: number, advisoryInfo: any, db: any): Promise<any> {
     try {
       const createTime = Date.now()
-      const bannerUrl = await baseUrlToOOS('advisory', advisoryInfo.bannerUrl)
+      let bannerUrl
+      if(advisoryInfo.bannerUrl.split(':')[0] === 'http') {
+        bannerUrl = advisoryInfo.bannerUrl
+      } else {
+        bannerUrl = await baseUrlToOOS('advisory', advisoryInfo.bannerUrl)
+      }
       const updateSentence = ` update advisory set
       advisory_tag=?,
       advisory_title=?,
@@ -99,6 +104,18 @@ export default class AdvisoryService implements AdvisoryInterface {
       return false
     } catch (err) {
       console.log(err)
+      return false
+    }
+  }
+  async deleteAdvisory(advisoryId:number, db:any):Promise<any> {
+    try {
+      const deleteSentence = 'delete from advisory where advisory_id = ?'
+      const [rows] = await db.query(deleteSentence,[advisoryId])
+      if (rows.affectedRows > 0) {
+        return true
+      }
+      return false
+    }catch(err){
       return false
     }
   }

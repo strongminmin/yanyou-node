@@ -13,7 +13,8 @@ export default class TalkService implements TalkInterface {
         return Object.assign(item, {
           create_time: time
         })
-      }).filter(item => item.talk_status == 0)
+      })
+      // .filter(item => item.talk_status == 0)
       return result
     } catch (err) {
       return false
@@ -70,7 +71,7 @@ export default class TalkService implements TalkInterface {
       const selectSentence = 'select talk_status from talk where talk_id = ?'
       const updateSentence = 'update talk set talk_status = ? where talk_id = ?'
       const [talkInfo] = await db.query(selectSentence, [talkId])
-      const talkstatus = talkInfo.talk_status == 1 ? 0 : 1
+      const talkstatus = talkInfo[0].talk_status == 1 ? 0 : 1
       const [rows] = await db.query(updateSentence, [talkstatus, talkId])
       if (rows.affectedRows > 0) {
         return true

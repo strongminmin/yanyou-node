@@ -113,7 +113,6 @@ export default class MeetController extends BaseController {
         throw new Error('删除失败')
       }
       resultData = createResultDate({
-        noerr: 1,
         message: '删除成功'
       })
     } catch (err) {

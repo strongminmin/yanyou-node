@@ -88,4 +88,45 @@ export default class UserController extends BaseController {
     }
     this.ctx.body = resultData
   }
+  @Get('/user-list')
+  async getUserList() {
+    let resultData
+    try {
+      const result = await this.userService.getUserList(this.ctx.db)
+      if (!result) {
+        throw new Error('请求失败')
+      }
+      resultData = createResultDate({
+        message: '请求成功',
+        data: result
+      })
+    }catch(err){
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
+  @Get('/disable-user')
+  async disableUser(@Params(['query']) params) {
+    let resultData
+    try {
+      const {user_id:userId} = params
+      const result = await this.userService.disableUser(userId,this.ctx.db)
+      if(!result) {
+        throw new Error('禁用失败')
+      }
+      resultData = createResultDate({
+        message: '禁用成功',
+        data: result
+      })
+    }catch(err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
 }

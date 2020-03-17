@@ -32,4 +32,16 @@ export interface UserInterface {
    * @param db
    */
   updateUser(userId: number, key: string, value: string, db: any): Promise<any>
+  /**
+   * 查询所有用户
+   */
+  getUserList(db:any): Promise<any>
+  /**
+   * 禁用或启用用户
+   */
+  disableUser(userId:number, db:any): Promise<any> 
+  /**
+   * 判断用户是否禁用
+   */
+  isDisable(userId:number, db:any):Promise<any> 
 }

@@ -12,6 +12,7 @@ export default class AdvisoryController extends BaseController {
     let resultData
     try {
       const { page, count } = params
+      console.log(params)
       const result = await this.advisoryService.getAdvisoryList(page, count, this.ctx.db)
       if (!result) {
         throw new Error('热点列表获取失败')
@@ -139,6 +140,27 @@ export default class AdvisoryController extends BaseController {
         data: result
       })
     } catch (err) {
+      resultData = createResultDate({
+        noerr: 1,
+        message: err.message
+      })
+    }
+    this.ctx.body = resultData
+  }
+  @Get('/delete-advisory')
+  async deleteAdvisory(@Params(['query']) params)  {
+    let resultData
+    try {
+      const {advisory_id: advisoryId} = params
+      const result = await this.advisoryService.deleteAdvisory(advisoryId, this.ctx.db)
+      if (!result) {
+        throw new Error('删除失败')
+      }
+      resultData = createResultDate({
+        message: '删除成功',
+        data: result
+      })
+    }catch(err) {
       resultData = createResultDate({
         noerr: 1,
         message: err.message
