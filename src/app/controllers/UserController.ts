@@ -12,15 +12,15 @@ export default class UserController extends BaseController {
   async login(@Params(['body']) params) {
     let resultData
     try {
-      const { user_email: email, user_password: password,platform,user_name:username } = params
-      let key:string
-      let value:string = password
-      if(platform === 'mobile') {
+      const { user_email: email, user_password: password, platform, user_name: username } = params
+      let key: string
+      let value: string = password
+      if (platform === 'mobile') {
         key = email
       } else {
         key = username
       }
-      const result = await this.userService.login(platform,key, value, this.ctx.db)
+      const result = await this.userService.login(platform, key, value, this.ctx.db)
       if (result === undefined && platform === 'mobile') {
         throw new Error('您输入的邮箱未注册')
       }
@@ -100,7 +100,7 @@ export default class UserController extends BaseController {
         message: '请求成功',
         data: result
       })
-    }catch(err){
+    } catch (err) {
       resultData = createResultDate({
         noerr: 1,
         message: err.message
@@ -112,16 +112,16 @@ export default class UserController extends BaseController {
   async disableUser(@Params(['query']) params) {
     let resultData
     try {
-      const {user_id:userId} = params
-      const result = await this.userService.disableUser(userId,this.ctx.db)
-      if(!result) {
+      const { user_id: userId } = params
+      const result = await this.userService.disableUser(userId, this.ctx.db)
+      if (!result) {
         throw new Error('禁用失败')
       }
       resultData = createResultDate({
         message: '禁用成功',
         data: result
       })
-    }catch(err) {
+    } catch (err) {
       resultData = createResultDate({
         noerr: 1,
         message: err.message
